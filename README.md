@@ -1,47 +1,32 @@
 # Dummy
 
-Elixir mocking library that actually works.
+Elixir mocking that makes sense. Dummy relies on meck and exposes a simpler way
+to mock methods than mock, thanks to a couple of assumptions:
 
-(some examples)
+- passthrough is enabled
+- mocked methods return their first argument
+
+
+### Installing
+
 ```elixir
-test "my test" do
-    # Module, method, return value (or replacement function)
-    # the default return value is the first argument (or maybe the method name)
-    dummy.patch(OtherModule, :method, :nil)
-    dummy.many(Module, [:method1])
-    result = Module.method3("args")
-    assert_called(OtherModule.method("args"))
-    assert_called(Module.method1("args"))
-    assert result == "expected"
-    # In theory ExUnit.on_exit means dummy.reset might not be necessary
-    dummy.reset()
-end
+    {:dummy, "~> 1.0.0", only: :test}
 ```
 
-(with a macro, 6 lines)
+### Usage
+
 ```elixir
 test "my test" do
     dummy Module, [method1, method2] do
         result = Module.method3("args")
-        assert_called(Module.method1("args"))
-        assert_called(Module.method2("args"))
+        called(Module.method1("args"))
+        called(Module.method2("args"))
         assert result == "expected"
     end
 end
 ```
 
-(without, 5 lines)
-```elixir
-test "my test" do
-    dummy.many(Module, [method1, method2])
-    result = Module.method3("args")
-    assert_called(Module.method1("args"))
-    assert_called(Module.method2("args"))
-    assert result == "expected"
-end
-```
-
-In mock this would be 8 lines:
+In mock this would be a bit longer:
 
 ```elixir
 test "my test" do
@@ -56,25 +41,32 @@ test "my test" do
 end
 ```
 
-which means in case you're testing a function that calls others in the same module,
-you don't have to write dummy function when running with passthrough.
+You can disable passthrough:
 
-It's also easier to apply multiple mocks over different methods
+```elixir
+test "my test" do
+    dummy Module, [method1], passthrough: false do
+        # ...
+    end
+end
+```
 
-(You do have to use the fully qualified name in the function call though.)
+You can specify a return value:
 
-## But mocks are not for Elixir
+```elixir
+test "my test" do
+    dummy Module, [{method1, "value"}] do
+        assert Module.method1("anything") == "value"
+    end
+end
+```
 
-I know what you're thinking: Jose said that mocking is evil, however he
-forgot some bits in his piece. What he calls for is called Detroit-style TDD,
-while mocks are widely used in London-style TDD. They have been discussed for
-decades, and I find incredibly annoying that the entire Elixir community accepted
-that as the only true way of testing, because "it's the Elixir way".
+Or replacements:
 
-The benefits of Detroit-style TDD is that you write less tests and don't have
-to worry about mocks. The con is that you are mixing unit and integration tests,
-and that negates most of the benefits of TDD.
-
-In London-style TDD each test is isolated with mocks. That means you get
-full TDD benefits. The con is that you must also write integration tests and
-maintain both.
+```elixir
+test "my test" do
+    dummy Module, [{method1, fn _x, _y -> "value" end}] do
+        assert Module.method1("anything", "works") == "value"
+    end
+end
+```
