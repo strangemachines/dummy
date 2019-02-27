@@ -30,7 +30,13 @@ defmodule DummyTest do
   end
 
   test "the dummy macro with specified return values" do
-    dummy IO, [{"puts", fn x, y -> y end}] do
+    dummy IO, [{"puts", "world"}] do
+      assert IO.puts("hello") == "world"
+    end
+  end
+
+  test "the dummy macro with specified replacement methods" do
+    dummy IO, [{"puts", fn _x, y -> y end}] do
       assert IO.puts("hello", "world") == "world"
     end
   end
