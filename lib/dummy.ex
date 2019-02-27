@@ -3,7 +3,7 @@ defmodule Dummy do
   Documentation for Dummy.
   """
 
-  defp apply_options(module, options) do
+  def apply_options(module, options) do
     if options[:passthrough] == false do
       :meck.new(module)
     else
