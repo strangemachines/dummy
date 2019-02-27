@@ -19,6 +19,12 @@ defmodule Dummy do
     end
   end
 
+  defmacro called({{:., _, [module, f]}, _, args}) do
+    quote do
+      :meck.called(unquote(module), unquote(f), unquote(args))
+    end
+  end
+
   @doc """
   Mocks methods of a single module. By defualt mocked methods return their first argument by default and non-mocked methods are passed through.
   """
