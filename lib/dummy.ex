@@ -32,7 +32,8 @@ defmodule Dummy do
   end
 
   @doc """
-  Mocks methods of a single module. By defualt mocked methods return their first argument by default and non-mocked methods are passed through.
+  Mocks methods of a single module. Mocked methods return their
+  first argument by default and non-mocked methods are passed through.
   """
   defmacro dummy(module_name, methods_list, options \\ [], do: test) do
     quote do
