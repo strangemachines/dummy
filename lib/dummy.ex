@@ -11,6 +11,10 @@ defmodule Dummy do
     end
   end
 
+  @doc """
+  Replaces a method with a mock, according to how the mock was defined:
+  either with "function" or {"function", fn}
+  """
   def replace_method(module, method) do
     if is_tuple(method) do
       function_name = String.to_atom(elem(method, 0))
