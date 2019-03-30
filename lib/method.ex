@@ -21,7 +21,15 @@ defmodule Dummy.Method do
     shards = String.split(method, "/")
 
     if Enum.count(shards) == 2 do
-      expect(module, Enum.at(shards, 0), fn x, y -> [x, y] end)
+      arity = Enum.at(shards, 1)
+
+      cond do
+        arity == "2" ->
+          expect(module, Enum.at(shards, 0), fn x, y -> [x, y] end)
+
+        arity == "3" ->
+          expect(module, Enum.at(shards, 0), fn x, y, z -> [x, y, z] end)
+      end
     else
       expect(module, method, fn x -> x end)
     end
@@ -29,7 +37,7 @@ defmodule Dummy.Method do
 
   @doc """
   Replaces a method with a mock, according to how the mock was defined:
-  either with "function" or {"function", value} or {"function", fn}
+  "function", "function/N" or {"function", value} or {"function", fn}
   """
   def replace(module, method) do
     if is_tuple(method) do

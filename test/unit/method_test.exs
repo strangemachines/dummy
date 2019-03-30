@@ -8,8 +8,13 @@ defmodule DummyTest.Method do
   end
 
   test "replacing a method with a specified arity" do
-    Method.replace(File, "touch/2")
-    assert File.touch("hello", "world") == ["hello", "world"]
+    Method.replace(File, "open/2")
+    assert File.open("hello", "world") == ["hello", "world"]
+  end
+
+  test "replacing a method with a specified arity of 3" do
+    Method.replace(File, "open/3")
+    assert File.open("hello", "world", "!") == ["hello", "world", "!"]
   end
 
   test "replacing a method with a specified value" do
