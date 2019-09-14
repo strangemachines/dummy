@@ -26,6 +26,9 @@ defmodule Dummy.Method do
     end
   end
 
+  @doc """
+  Replaces a function from a string like "function" or "function/<arity>".
+  """
   def replace_from_string(module, method) do
     shards = String.split(method, "/")
 
