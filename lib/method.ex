@@ -12,7 +12,7 @@ defmodule Dummy.Method do
   {"function", value} replaces the function with an anonymous, single-argument
   function that returns 'value'
 
-  {"function", fn ... -> ... end} replace the original function with the given
+  {"function", fn ... -> ... end} replaces the original function with the given
   one.
   """
   def replace_from_tuple(module, method) do
