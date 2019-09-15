@@ -9,7 +9,9 @@ defmodule Dummy.MixProject do
       start_permanent: Mix.env() == :prod,
       description: description(),
       package: package(),
-      deps: deps()
+      deps: deps(),
+      source_url: "https://github.com/strangemachines/dummy",
+      homepage_url: "https://hexdocs.pm/dummy"
     ]
   end
 
@@ -38,7 +40,7 @@ defmodule Dummy.MixProject do
       files: ~w(mix.exs lib .formatter.exs README.md LICENSE),
       maintainers: ["Jacopo Cascioli"],
       licenses: ["MPL 2.0"],
-      links: %{"GitHub" => "https://github.com/Vesuvium/dummy"}
+      links: %{"GitHub" => "https://github.com/strangemachines/dummy"}
     ]
   end
 end
