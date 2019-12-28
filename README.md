@@ -51,7 +51,7 @@ end
 
 ```elixir
 test "my test" do
-    dummy OtherModule, [{method, "value"}] do
+    dummy OtherModule, [{"method", "value"}] do
         assert OtherModule.method("anything") == "value"
     end
 end
@@ -61,7 +61,7 @@ end
 
 ```elixir
 test "my test" do
-    dummy OtherModule, [{method, fn _x -> %{key: => "value"} end}] do
+    dummy OtherModule, [{"method", fn _x -> %{key: => "value"} end}] do
         assert OtherModule.method("anything") == %{key: => "value"}
     end
 end
