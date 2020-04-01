@@ -6,30 +6,7 @@ defmodule Dummy.Method do
     :meck.expect(module, String.to_atom(function_name), function)
   end
 
-  @doc """
-  Replaces a function with a value or a function.
-
-  {"function", value} replaces the function with an anonymous, single-argument
-  function that returns 'value'
-
-  {"function", fn ... -> ... end} replaces the original function with the given
-  one.
-  """
-  def replace_from_tuple(module, method) do
-    function_name = elem(method, 0)
-    replacement = elem(method, 1)
-
-    if is_function(elem(method, 1)) do
-      expect(module, function_name, replacement)
-    else
-      expect(module, function_name, fn _x -> replacement end)
-    end
-  end
-
-  @doc """
-  Replaces a function from a string like "function" or "function/<arity>".
-  """
-  def replace_from_string(module, method) do
+  def replace(module, method) when is_binary(method) do
     shards = String.split(method, "/")
 
     if Enum.count(shards) == 2 do
@@ -57,15 +34,25 @@ defmodule Dummy.Method do
     end
   end
 
+  def replace(module, {function, replacement}) when is_function(replacement) do
+    expect(module, function, replacement)
+  end
+
   @doc """
   Replaces a method with a mock, according to how the mock was defined:
   "function", "function/N" or {"function", value} or {"function", fn}
+
+  "function/<arity>" replaces a function with one that returns its parameters.
+
+  "function" is a shorthand for "function/1"
+
+  {"function", value} replaces the function with an anonymous, single-argument
+  function that returns 'value'
+
+  {"function", fn a, b, .. -> body end} replaces the original function with
+  the given one.
   """
-  def replace(module, method) do
-    if is_tuple(method) do
-      replace_from_tuple(module, method)
-    else
-      replace_from_string(module, method)
-    end
+  def replace(module, {function, value}) do
+    expect(module, function, fn _x -> value end)
   end
 end
