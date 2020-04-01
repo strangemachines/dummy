@@ -6,29 +6,49 @@ defmodule Dummy.Method do
     :meck.expect(module, String.to_atom(function_name), function)
   end
 
+  defp replace_arity(module, method, arity) do
+    cond do
+      arity == "0" ->
+        expect(module, method, fn -> method end)
+
+      arity == "1" ->
+        expect(module, method, fn x -> x end)
+
+      arity == "2" ->
+        expect(module, method, fn x, y -> [x, y] end)
+
+      arity == "3" ->
+        expect(module, method, fn x, y, z -> [x, y, z] end)
+
+      arity == "4" ->
+        expect(module, method, fn x, y, z, w -> [x, y, z, w] end)
+    end
+  end
+
+  defp replace_arity(module, method, arity, value) do
+    cond do
+      arity == "0" ->
+        expect(module, method, fn -> value end)
+
+      arity == "1" ->
+        expect(module, method, fn _x -> value end)
+
+      arity == "2" ->
+        expect(module, method, fn _x, _y -> value end)
+
+      arity == "3" ->
+        expect(module, method, fn _x, _y, _z -> value end)
+
+      arity == "4" ->
+        expect(module, method, fn _x, _y, _z, _w -> value end)
+    end
+  end
+
   def replace(module, method) when is_binary(method) do
     shards = String.split(method, "/")
 
     if Enum.count(shards) == 2 do
-      method = Enum.at(shards, 0)
-      arity = Enum.at(shards, 1)
-
-      cond do
-        arity == "0" ->
-          expect(module, method, fn -> method end)
-
-        arity == "1" ->
-          expect(module, method, fn x -> x end)
-
-        arity == "2" ->
-          expect(module, method, fn x, y -> [x, y] end)
-
-        arity == "3" ->
-          expect(module, method, fn x, y, z -> [x, y, z] end)
-
-        arity == "4" ->
-          expect(module, method, fn x, y, z, w -> [x, y, z, w] end)
-      end
+      replace_arity(module, Enum.at(shards, 0), Enum.at(shards, 1))
     else
       expect(module, method, fn x -> x end)
     end
@@ -40,7 +60,8 @@ defmodule Dummy.Method do
 
   @doc """
   Replaces a method with a mock, according to how the mock was defined:
-  "function", "function/N" or {"function", value} or {"function", fn}
+  "function", "function/N", {"function", value}, {"function/N", value}
+  or {"function", fn}
 
   "function/<arity>" replaces a function with one that returns its parameters.
 
@@ -53,6 +74,12 @@ defmodule Dummy.Method do
   the given one.
   """
   def replace(module, {function, value}) do
-    expect(module, function, fn _x -> value end)
+    shards = String.split(function, "/")
+
+    if Enum.count(shards) == 2 do
+      replace_arity(module, Enum.at(shards, 0), Enum.at(shards, 1), value)
+    else
+      expect(module, function, fn _x -> value end)
+    end
   end
 end
