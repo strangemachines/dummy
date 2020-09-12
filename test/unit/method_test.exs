@@ -1,6 +1,6 @@
 defmodule DummyTest.Method do
   use ExUnit.Case
-  alias Dummy.Method
+  alias Dummy.{Functions, Method}
 
   test "replace/2 with a string" do
     Method.replace(File, "read")
@@ -32,6 +32,11 @@ defmodule DummyTest.Method do
     assert String.replace(1, 2, 3, 4) == [1, 2, 3, 4]
   end
 
+  test "replace/2 with function_name/5" do
+    Method.replace(Functions, "five/5")
+    assert Functions.five(1, 2, 3, 4, 5) == [1, 2, 3, 4, 5]
+  end
+
   test "replace/2 with a value" do
     Method.replace(File, {"read", "world"})
     assert File.read("hello") == "world"
@@ -60,6 +65,11 @@ defmodule DummyTest.Method do
   test "replace/2 with function_name/4 and a value" do
     Method.replace(String, {"replace/4", "1234"})
     assert String.replace(1, 2, 3, 4) == "1234"
+  end
+
+  test "replace/2 with function_name/5 and a value" do
+    Method.replace(Functions, {"five/5", "12345"})
+    assert Functions.five(1, 2, 3, 4, 5) == "12345"
   end
 
   test "replace/2 with a function" do

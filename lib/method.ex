@@ -22,6 +22,9 @@ defmodule Dummy.Method do
 
       arity == "4" ->
         expect(module, method, fn x, y, z, w -> [x, y, z, w] end)
+
+      arity == "5" ->
+        expect(module, method, fn x, y, z, w, k -> [x, y, z, w, k] end)
     end
   end
 
@@ -41,6 +44,9 @@ defmodule Dummy.Method do
 
       arity == "4" ->
         expect(module, method, fn _x, _y, _z, _w -> value end)
+
+      arity == "5" ->
+        expect(module, method, fn _x, _y, _z, _w, _k -> value end)
     end
   end
 
