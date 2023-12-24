@@ -21,14 +21,18 @@ defmodule Dummy.Method do
     shards = String.split(method, "/")
 
     if Enum.count(shards) == 2 do
+      method = Enum.at(shards, 0)
       arity = Enum.at(shards, 1)
 
       cond do
+        arity == "0" ->
+          expect(module, method, fn -> method end)
+
         arity == "2" ->
-          expect(module, Enum.at(shards, 0), fn x, y -> [x, y] end)
+          expect(module, method, fn x, y -> [x, y] end)
 
         arity == "3" ->
-          expect(module, Enum.at(shards, 0), fn x, y, z -> [x, y, z] end)
+          expect(module, method, fn x, y, z -> [x, y, z] end)
       end
     else
       expect(module, method, fn x -> x end)

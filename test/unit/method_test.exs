@@ -17,6 +17,11 @@ defmodule DummyTest.Method do
     assert File.open("hello", "world", "!") == ["hello", "world", "!"]
   end
 
+  test "replacing a method with an arity of 0" do
+    Method.replace(Time, "utc_now/0")
+    assert Time.utc_now() == "utc_now"
+  end
+
   test "replacing a method with a specified value" do
     Method.replace(File, {"read", "world"})
     assert File.read("hello") == "world"
