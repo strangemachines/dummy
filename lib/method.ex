@@ -6,6 +6,15 @@ defmodule Dummy.Method do
     :meck.expect(module, String.to_atom(function_name), function)
   end
 
+  @doc """
+  Replaces a function with a value or a function.
+
+  {"function", value} replaces the function with an anonymous, single-argument
+  function that returns 'value'
+
+  {"function", fn ... -> ... end} replace the original function with the given
+  one.
+  """
   def replace_from_tuple(module, method) do
     function_name = elem(method, 0)
     replacement = elem(method, 1)
