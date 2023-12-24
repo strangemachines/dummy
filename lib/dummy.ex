@@ -2,30 +2,13 @@ defmodule Dummy do
   @moduledoc """
   Documentation for Dummy.
   """
+  alias Dummy.Method
 
   def apply_options(module, options) do
     if options[:passthrough] == false do
       :meck.new(module)
     else
       :meck.new(module, [:passthrough])
-    end
-  end
-
-  @doc """
-  Replaces a method with a mock, according to how the mock was defined:
-  either with "function" or {"function", fn}
-  """
-  def replace_method(module, method) do
-    if is_tuple(method) do
-      function_name = String.to_atom(elem(method, 0))
-
-      if is_function(elem(method, 1)) do
-        :meck.expect(module, function_name, elem(method, 1))
-      else
-        :meck.expect(module, function_name, fn _x -> elem(method, 1) end)
-      end
-    else
-      :meck.expect(module, String.to_atom(method), fn x -> x end)
     end
   end
 
@@ -45,7 +28,7 @@ defmodule Dummy do
       methods = unquote(methods_list)
       apply_options(module, unquote(options))
 
-      for method <- methods, do: replace_method(module, method)
+      for method <- methods, do: Method.replace(module, method)
 
       try do
         unquote(test)
