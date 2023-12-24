@@ -17,7 +17,7 @@ defmodule Dummy.Method do
     end
   end
 
-  def from_string(module, method) do
+  def replace_from_string(module, method) do
     shards = String.split(method, "/")
 
     if Enum.count(shards) == 2 do
@@ -47,7 +47,7 @@ defmodule Dummy.Method do
     if is_tuple(method) do
       replace_from_tuple(module, method)
     else
-      from_string(module, method)
+      replace_from_string(module, method)
     end
   end
 end
