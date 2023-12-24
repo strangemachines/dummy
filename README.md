@@ -15,7 +15,7 @@ to mock methods, thanks to a couple of assumptions:
 ## Installing
 
 ```elixir
-    {:dummy, "~> 1.2", only: :test}
+    {:dummy, "~> 1.3", only: :test}
 ```
 
 ## Usage
@@ -53,6 +53,16 @@ end
 test "my test" do
     dummy OtherModule, [{"method", "value"}] do
         assert OtherModule.method("anything") == "value"
+    end
+end
+```
+
+### Specifying a return value and an arity
+
+```elixir
+test "my test" do
+    dummy OtherModule, [{"method/2", "value"}] do
+        assert OtherModule.method(1, 2) == "value"
     end
 end
 ```
