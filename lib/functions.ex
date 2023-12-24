@@ -1,5 +1,5 @@
 defmodule Dummy.Functions do
-  @doc """
+  @moduledoc """
   Provides functions that are hard to find/mock in the standard library.
   Tests can instead mock these.
   """
