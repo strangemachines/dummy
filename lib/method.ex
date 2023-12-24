@@ -17,7 +17,7 @@ defmodule Dummy.Method do
     end
   end
 
-  defp from_string(module, method) do
+  def from_string(module, method) do
     shards = String.split(method, "/")
 
     if Enum.count(shards) == 2 do
