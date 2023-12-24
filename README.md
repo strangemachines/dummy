@@ -1,72 +1,87 @@
 # Dummy
 
-Elixir mocking that makes sense. Dummy relies on meck and exposes a simpler way
-to mock methods than mock, thanks to a couple of assumptions:
+Elixir mocking that makes sense. Dummy relies on meck and exposes a simple way
+to mock methods, thanks to a couple of assumptions:
 
 - passthrough is enabled
-- mocked methods return their first argument
+- mocked methods return their arguments
+- it's easy to specify replacements
 
 
-### Installing
+## Installing
 
 ```elixir
     {:dummy, "~> 1.0.0", only: :test}
 ```
 
-### Usage
+## Usage
+
 
 ```elixir
+use ExUnit.Case
+import Dummy
+
+alias MyApp.Module
+
+
 test "my test" do
-    dummy Module, [method1, method2] do
-        result = Module.method3("args")
-        called(Module.method1("args"))
-        called(Module.method2("args"))
-        assert result == "expected"
+    dummy OtherModule, ["method"] do
+        Module.call_to_other_module("arg1")
+        assert called(OtherModule.method("arg1"))
     end
 end
 ```
 
-In mock this would be a bit longer:
+### Arities
 
 ```elixir
 test "my test" do
-    with_mock Module, [:passthrough],
-      method1: fn path -> path end,
-      method2: fn yaml -> yaml end do
-      result = Module.method3("args")
-      assert_called(Module.method1("args"))
-      assert_called(Module.method2("args"))
-      assert result == "expected"
+    dummy OtherModule, ["method/2"] do
+        Module.call_to_other_module("arg1", "arg2")
+        assert called(OtherModule.method("arg1", "arg2"))
     end
 end
 ```
 
-You can disable passthrough:
+### Specifying a return value
 
 ```elixir
 test "my test" do
-    dummy Module, [method1], passthrough: false do
-        # ...
+    dummy OtherModule, [{method, "value"}] do
+        assert OtherModule.method("anything") == "value"
     end
 end
 ```
 
-You can specify a return value:
+### Specifying a replacement function
 
 ```elixir
 test "my test" do
-    dummy Module, [{method1, "value"}] do
-        assert Module.method1("anything") == "value"
+    dummy OtherModule, [{method, fn _x -> %{key: => "value"} end}] do
+        assert OtherModule.method("anything") == %{key: => "value"}
     end
 end
 ```
 
-Or replacements:
+### Multiple replacements
 
 ```elixir
 test "my test" do
-    dummy Module, [{method1, fn _x, _y -> "value" end}] do
-        assert Module.method1("anything", "works") == "value"
+    dummy OtherModule, ["method", "other_method"] do
+        Module.call_to_other_module("arg1")
+        assert called(OtherModule.method("arg1"))
+        assert called(OtherModule.other_method("other_arg"))
+    end
+end
+```
+
+### Disabling passthrough
+
+```elixir
+test "my test" do
+    dummy OtherModule, ["method"], passthrough: false do
+        Module.call_to_other_module("arg1")
+        assert called(OtherModule.method("arg1"))
     end
 end
 ```
