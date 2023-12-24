@@ -1,7 +1,6 @@
 # Dummy
 
 [![Hex.pm](https://img.shields.io/hexpm/v/dummy.svg?style=for-the-badge)](https://hex.pm/packages/dummy)
-[![Travis (.com)](https://img.shields.io/travis/com/strangemachines/dummy.svg?style=for-the-badge)](https://travis-ci.com/strangemachines/dummy)
 [![Hexdocs](https://img.shields.io/badge/docs-hexdocs-blueviolet.svg?style=for-the-badge)](https://hexdocs.pm/dummy)
 
 Elixir mocking that makes sense. Dummy relies on meck and exposes a simple way
@@ -15,7 +14,7 @@ to mock methods, thanks to a couple of assumptions:
 ## Installing
 
 ```elixir
-    {:dummy, "~> 1.4", only: :test}
+    {:dummy, "~> 2.0", only: :test}
 ```
 
 ## Usage

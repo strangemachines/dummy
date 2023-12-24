@@ -4,7 +4,7 @@ defmodule Dummy.MixProject do
   def project do
     [
       app: :dummy,
-      version: "1.4.0",
+      version: "2.0.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       test_coverage: [tool: ExCoveralls],
@@ -51,7 +51,7 @@ defmodule Dummy.MixProject do
       name: :dummy,
       files: ~w(mix.exs lib .formatter.exs README.md LICENSE),
       maintainers: ["nomorepanic"],
-      licenses: ["MPL 2.0"],
+      licenses: ["MPL-2.0"],
       links: %{"GitHub" => "https://github.com/strangemachines/dummy"}
     ]
   end
