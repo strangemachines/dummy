@@ -40,6 +40,9 @@ defmodule Dummy.Method do
         arity == "0" ->
           expect(module, method, fn -> method end)
 
+        arity == "1" ->
+          expect(module, method, fn x -> x end)
+
         arity == "2" ->
           expect(module, method, fn x, y -> [x, y] end)
 
