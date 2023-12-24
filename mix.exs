@@ -11,7 +11,11 @@ defmodule Dummy.MixProject do
       package: package(),
       deps: deps(),
       source_url: "https://github.com/strangemachines/dummy",
-      homepage_url: "https://hexdocs.pm/dummy"
+      homepage_url: "https://hexdocs.pm/dummy",
+      docs: [
+        main: "Dummy",
+        extras: ["README.md"]
+      ]
     ]
   end
 
