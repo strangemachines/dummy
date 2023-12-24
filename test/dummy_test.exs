@@ -34,4 +34,10 @@ defmodule DummyTest do
       assert IO.puts("hello", "world") == "world"
     end
   end
+
+  test "the dummy macro with failing tests" do
+    dummy IO, ["puts"] do
+      assert IO.puts("hello") == false
+    end
+  end
 end

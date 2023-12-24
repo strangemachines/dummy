@@ -30,8 +30,11 @@ defmodule Dummy do
 
       for method <- methods, do: replace_method(module, method)
 
-      unquote(test)
-      :meck.unload(module)
+      try do
+        unquote(test)
+      after
+        :meck.unload(module)
+      end
     end
   end
 end
