@@ -17,7 +17,13 @@ defmodule Dummy.Method do
         :meck.expect(module, function_name, fn _x -> elem(method, 1) end)
       end
     else
-      :meck.expect(module, String.to_atom(method), fn x -> x end)
+      shards = String.split(method, "/")
+
+      if Enum.count(shards) == 2 do
+        :meck.expect(module, String.to_atom(Enum.at(shards, 0)), fn x, y -> [x, y] end)
+      else
+        :meck.expect(module, String.to_atom(method), fn x -> x end)
+      end
     end
   end
 end
