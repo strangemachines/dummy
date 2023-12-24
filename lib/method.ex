@@ -6,7 +6,7 @@ defmodule Dummy.Method do
     :meck.expect(module, String.to_atom(function_name), function)
   end
 
-  def from_tuple(module, method) do
+  def replace_from_tuple(module, method) do
     function_name = elem(method, 0)
     replacement = elem(method, 1)
 
@@ -45,7 +45,7 @@ defmodule Dummy.Method do
   """
   def replace(module, method) do
     if is_tuple(method) do
-      from_tuple(module, method)
+      replace_from_tuple(module, method)
     else
       from_string(module, method)
     end
