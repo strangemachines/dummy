@@ -27,7 +27,7 @@ defmodule Dummy.MixProject do
 
   defp deps do
     [
-      {:credo, "~> 0.9", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
       {:meck, "~> 0.8"}
     ]
