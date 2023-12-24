@@ -7,4 +7,13 @@ erl_crash.dump
 *.ez
 *.beam
 /config/*.secret.exs
+.elixir_ls/
 mix.lock
+
+*.coverdata
+
+# macOs
+.DS_Store
+
+# Editors
+.vscode

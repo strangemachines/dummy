@@ -7,11 +7,18 @@ defmodule Dummy.MixProject do
       version: "1.4.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
+      test_coverage: [tool: ExCoveralls],
       description: description(),
       package: package(),
       deps: deps(),
       source_url: "https://github.com/strangemachines/dummy",
       homepage_url: "https://hexdocs.pm/dummy",
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.html": :test,
+        "coveralls.lcov": :test
+      ],
       docs: [
         main: "Dummy",
         extras: ["README.md"]
@@ -29,6 +36,7 @@ defmodule Dummy.MixProject do
     [
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.14", only: :test},
       {:meck, "~> 0.8"}
     ]
   end
