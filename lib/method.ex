@@ -7,24 +7,26 @@ defmodule Dummy.Method do
   end
 
   defp replace_arity(module, method, arity) do
+    result = "#{method}/#{arity}"
+
     cond do
       arity == "0" ->
-        expect(module, method, fn -> method end)
+        expect(module, method, fn -> result end)
 
       arity == "1" ->
-        expect(module, method, fn x -> x end)
+        expect(module, method, fn _x -> result end)
 
       arity == "2" ->
-        expect(module, method, fn x, y -> [x, y] end)
+        expect(module, method, fn _x, _y -> result end)
 
       arity == "3" ->
-        expect(module, method, fn x, y, z -> [x, y, z] end)
+        expect(module, method, fn _x, _y, _z -> result end)
 
       arity == "4" ->
-        expect(module, method, fn x, y, z, w -> [x, y, z, w] end)
+        expect(module, method, fn _x, _y, _z, _w -> result end)
 
       arity == "5" ->
-        expect(module, method, fn x, y, z, w, k -> [x, y, z, w, k] end)
+        expect(module, method, fn _x, _y, _z, _w, _k -> result end)
     end
   end
 
@@ -56,7 +58,7 @@ defmodule Dummy.Method do
     if Enum.count(shards) == 2 do
       replace_arity(module, Enum.at(shards, 0), Enum.at(shards, 1))
     else
-      expect(module, method, fn x -> x end)
+      expect(module, method, fn _ -> "#{method}/1" end)
     end
   end
 
@@ -69,7 +71,7 @@ defmodule Dummy.Method do
   "function", "function/N", {"function", value}, {"function/N", value}
   or {"function", fn}
 
-  "function/<arity>" replaces a function with one that returns its parameters.
+  "function/<arity>" replaces a function with one that returns "function/<arity>".
 
   "function" is a shorthand for "function/1"
 

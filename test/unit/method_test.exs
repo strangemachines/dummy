@@ -4,37 +4,37 @@ defmodule DummyTest.Method do
 
   test "replace/2 with a string" do
     Method.replace(File, "read")
-    assert File.read("hello") == "hello"
+    assert File.read("hello") == "read/1"
   end
 
   test "replace/2 with function_name/0" do
     Method.replace(Time, "utc_now/0")
-    assert Time.utc_now() == "utc_now"
+    assert Time.utc_now() == "utc_now/0"
   end
 
   test "replace/2 with function_name/1" do
     Method.replace(File, "read/1")
-    assert File.read("hello") == "hello"
+    assert File.read("hello") == "read/1"
   end
 
   test "replace/2 with function_name/2" do
     Method.replace(File, "open/2")
-    assert File.open("hello", "world") == ["hello", "world"]
+    assert File.open("hello", "world") == "open/2"
   end
 
   test "replace/2 with function_name/3" do
     Method.replace(File, "open/3")
-    assert File.open("hello", "world", "!") == ["hello", "world", "!"]
+    assert File.open("hello", "world", "!") == "open/3"
   end
 
   test "replace/2 with function_name/4" do
     Method.replace(String, "replace/4")
-    assert String.replace(1, 2, 3, 4) == [1, 2, 3, 4]
+    assert String.replace(1, 2, 3, 4) == "replace/4"
   end
 
   test "replace/2 with function_name/5" do
     Method.replace(Functions, "five/5")
-    assert Functions.five(1, 2, 3, 4, 5) == [1, 2, 3, 4, 5]
+    assert Functions.five(1, 2, 3, 4, 5) == "five/5"
   end
 
   test "replace/2 with a value" do
