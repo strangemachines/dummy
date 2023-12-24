@@ -7,7 +7,12 @@ defmodule DummyTest.Method do
     assert File.read("hello") == "hello"
   end
 
-  test "replacing a method with a specified arity" do
+  test "replacing a method with an arity of 0" do
+    Method.replace(Time, "utc_now/0")
+    assert Time.utc_now() == "utc_now"
+  end
+
+  test "replacing a method with an arity of 2" do
     Method.replace(File, "open/2")
     assert File.open("hello", "world") == ["hello", "world"]
   end
@@ -15,11 +20,6 @@ defmodule DummyTest.Method do
   test "replacing a method with a specified arity of 3" do
     Method.replace(File, "open/3")
     assert File.open("hello", "world", "!") == ["hello", "world", "!"]
-  end
-
-  test "replacing a method with an arity of 0" do
-    Method.replace(Time, "utc_now/0")
-    assert Time.utc_now() == "utc_now"
   end
 
   test "replacing a method with a specified value" do
