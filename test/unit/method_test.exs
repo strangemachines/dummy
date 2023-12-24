@@ -22,6 +22,11 @@ defmodule DummyTest.Method do
     assert File.open("hello", "world", "!") == ["hello", "world", "!"]
   end
 
+  test "replacing a function with an arity of 4" do
+    Method.replace(String, "replace/4")
+    assert String.replace(1, 2, 3, 4) == [1, 2, 3, 4]
+  end
+
   test "replacing a method with a specified value" do
     Method.replace(File, {"read", "world"})
     assert File.read("hello") == "world"
