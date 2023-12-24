@@ -11,7 +11,7 @@ to mock methods, thanks to a couple of assumptions:
 ## Installing
 
 ```elixir
-    {:dummy, "~> 1.0.0", only: :test}
+    {:dummy, "~> 1.1.0", only: :test}
 ```
 
 ## Usage
