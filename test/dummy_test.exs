@@ -44,6 +44,11 @@ defmodule DummyTest do
       end
     end
   end
+
+  test "the called macro" do
+    dummy IO, ["puts"] do
+      IO.puts("hello")
+      assert called(IO.puts("hello"))
     end
   end
 end
