@@ -11,6 +11,14 @@ defmodule Dummy do
     end
   end
 
+  def replace_method(module, method) do
+    if is_tuple(method) do
+      :meck.expect(module, String.to_atom(elem(method, 0)), elem(method, 1))
+    else
+      :meck.expect(module, String.to_atom(method), fn x -> x end)
+    end
+  end
+
   @doc """
   Mocks methods of a single module. By defualt mocked methods return their first argument by default and non-mocked methods are passed through.
   """
@@ -20,8 +28,7 @@ defmodule Dummy do
       methods = unquote(methods_list)
       apply_options(module, unquote(options))
 
-      for method <- methods,
-          do: :meck.expect(module, String.to_atom(method), fn x -> x end)
+      for method <- methods, do: replace_method(module, method)
 
       unquote(test)
       :meck.unload(module)
