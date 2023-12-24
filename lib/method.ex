@@ -2,14 +2,18 @@ defmodule Dummy.Method do
   @moduledoc """
   Handles replacing methods
   """
+  defp expect(module, function_name, function) do
+    :meck.expect(module, String.to_atom(function_name), function)
+  end
 
   defp from_tuple(module, method) do
-    function_name = String.to_atom(elem(method, 0))
+    function_name = elem(method, 0)
+    replacement = elem(method, 1)
 
     if is_function(elem(method, 1)) do
-      :meck.expect(module, function_name, elem(method, 1))
+      expect(module, function_name, replacement)
     else
-      :meck.expect(module, function_name, fn _x -> elem(method, 1) end)
+      expect(module, function_name, fn _x -> replacement end)
     end
   end
 
@@ -17,9 +21,9 @@ defmodule Dummy.Method do
     shards = String.split(method, "/")
 
     if Enum.count(shards) == 2 do
-      :meck.expect(module, String.to_atom(Enum.at(shards, 0)), fn x, y -> [x, y] end)
+      expect(module, Enum.at(shards, 0), fn x, y -> [x, y] end)
     else
-      :meck.expect(module, String.to_atom(method), fn x -> x end)
+      expect(module, method, fn x -> x end)
     end
   end
 
